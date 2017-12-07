@@ -1,0 +1,22 @@
+{
+  "name": "sum-api",
+  "tests": [
+    {
+      "request": {
+        "path": "/1/2/3",
+        "method": "GET",
+        "header": {
+          "Content-Type": "text/html, application/json"
+        },
+        "query": {
+          
+        },
+        "body": ""
+      },
+      "response": {
+        "code": 200,
+        "body": "6"
+      }
+    }
+  ]
+}
