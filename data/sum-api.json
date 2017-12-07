@@ -2,6 +2,7 @@
   "name": "sum-api",
   "tests": [
     {
+      "description": "should respond with sum of path integers",
       "request": {
         "path": "/1/2/3",
         "method": "GET",
@@ -9,7 +10,25 @@
           "Content-Type": "text/html, application/json"
         },
         "query": {
-          
+
+        },
+        "body": ""
+      },
+      "response": {
+        "code": 200,
+        "body": "6"
+      }
+    },
+    {
+      "description": "should ignore non-number values in path",
+      "request": {
+        "path": "/foo/1/bar/2/3/baz",
+        "method": "GET",
+        "header": {
+          "Content-Type": "text/html, application/json"
+        },
+        "query": {
+
         },
         "body": ""
       },
