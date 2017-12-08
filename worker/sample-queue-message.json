@@ -1,0 +1,16 @@
+{
+  Attributes: {
+    SentTimestamp: "1512714480353"
+  },
+  Body: "hello world 3",
+  MD5OfBody: "[32 byte string]",
+  MD5OfMessageAttributes: "[32 byte string]",
+  MessageAttributes: {
+    x-order: {
+      DataType: "Number",
+      StringValue: "3"
+    }
+  },
+  MessageId: "[uuid]",
+  ReceiptHandle: "[base 64 string]"
+}

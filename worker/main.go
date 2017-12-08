@@ -42,4 +42,16 @@ func main() {
 	for _, v := range result.Messages {
 		fmt.Println(v)
 	}
+
+	resultDelete, err := svc.DeleteMessage(&sqs.DeleteMessageInput{
+		QueueUrl:      &qUrl,
+		ReceiptHandle: result.Messages[0].ReceiptHandle,
+	})
+
+	if err != nil {
+		fmt.Println("Delete Error", err)
+		return
+	}
+
+	fmt.Println("Message Deleted", resultDelete)
 }
