@@ -63,7 +63,7 @@ func main() {
 			fmt.Println(m)
 
 		case <-t.C:
-			getMessages(svc, qUrl, recv)
+			go getMessages(svc, qUrl, recv)
 		}
 	}
 }
