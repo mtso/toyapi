@@ -3,19 +3,14 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sqs"
 )
 
-func main() {
-	sess := session.Must(session.NewSession())
-
-	svc := sqs.New(sess)
-
-	qUrl := os.Getenv("QURL")
-
+func getMessages(svc *sqs.SQS, qUrl string, done chan *sqs.Message) {
 	result, err := svc.ReceiveMessage(&sqs.ReceiveMessageInput{
 		AttributeNames: []*string{
 			aws.String(sqs.MessageSystemAttributeNameSentTimestamp),
@@ -39,11 +34,7 @@ func main() {
 		return
 	}
 
-	for _, v := range result.Messages {
-		fmt.Println(v)
-	}
-
-	resultDelete, err := svc.DeleteMessage(&sqs.DeleteMessageInput{
+	_, err = svc.DeleteMessage(&sqs.DeleteMessageInput{
 		QueueUrl:      &qUrl,
 		ReceiptHandle: result.Messages[0].ReceiptHandle,
 	})
@@ -53,5 +44,26 @@ func main() {
 		return
 	}
 
-	fmt.Println("Message Deleted", resultDelete)
+	for _, msg := range result.Messages {
+		done <- msg
+	}
+}
+
+func main() {
+	sess := session.Must(session.NewSession())
+	svc := sqs.New(sess)
+	qUrl := os.Getenv("QURL")
+
+	t := time.NewTicker(time.Second * 2)
+	recv := make(chan *sqs.Message)
+
+	for {
+		select {
+		case m := <-recv:
+			fmt.Println(m)
+
+		case <-t.C:
+			getMessages(svc, qUrl, recv)
+		}
+	}
 }
