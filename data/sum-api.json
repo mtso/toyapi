@@ -36,6 +36,24 @@
         "code": 200,
         "body": "6"
       }
+    },
+    {
+      "description": "should handle negative values",
+      "request": {
+        "path": "/-1/-2/3",
+        "method": "GET",
+        "header": {
+          "Content-Type": "text/html, application/json"
+        },
+        "query": {
+
+        },
+        "body": ""
+      },
+      "response": {
+        "code": 200,
+        "body": "0"
+      }
     }
   ]
 }
